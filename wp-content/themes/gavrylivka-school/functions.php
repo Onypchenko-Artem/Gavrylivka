@@ -156,6 +156,12 @@ function gavrylivka_school_scripts() {
 		// Hero slider JavaScript
 		wp_enqueue_script( 'gavrylivka-school-hero-slider', get_template_directory_uri() . '/assets/js/hero-slider.js', array(), _S_VERSION, true );
 	}
+	
+	// Single post/news page styles
+	if ( is_single() ) {
+		wp_enqueue_style( 'gavrylivka-school-single', get_template_directory_uri() . '/assets/css/single/single.css', array(), _S_VERSION );
+		wp_enqueue_script( 'gavrylivka-school-reading-progress', get_template_directory_uri() . '/assets/js/reading-progress.js', array(), _S_VERSION, true );
+	}
 
 	wp_enqueue_script( 'gavrylivka-school-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array(), _S_VERSION, true );
 
