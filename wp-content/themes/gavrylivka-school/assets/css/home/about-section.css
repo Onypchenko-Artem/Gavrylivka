@@ -1,0 +1,54 @@
+/* About Section Styles
+--------------------------------------------- */
+.about-section {
+	padding: 80px 0;
+}
+
+.about-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 40px;
+}
+
+.about-item {
+	text-align: center;
+	padding: 40px 20px;
+	background: white;
+	border-radius: 12px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.about-item:hover {
+	transform: translateY(-8px);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.about-icon {
+	margin-bottom: 24px;
+}
+
+.about-item h3 {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: #1f2937;
+	margin-bottom: 16px;
+}
+
+.about-item p {
+	color: #6b7280;
+	line-height: 1.6;
+	margin: 0;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+	.about-section {
+		padding: 60px 0;
+	}
+	
+	.about-grid {
+		grid-template-columns: 1fr;
+		gap: 30px;
+	}
+}

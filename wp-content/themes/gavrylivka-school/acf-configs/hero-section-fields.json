@@ -1,0 +1,98 @@
+{
+    "key": "group_hero_section",
+    "title": "Hero Section (Главный баннер)",
+    "fields": [
+        {
+            "key": "field_hero_title",
+            "label": "Заголовок",
+            "name": "hero_title",
+            "type": "text",
+            "instructions": "Основной заголовок в hero секции",
+            "required": 0,
+            "default_value": "Gavrylivka School",
+            "placeholder": "Введите заголовок"
+        },
+        {
+            "key": "field_hero_subtitle",
+            "label": "Подзаголовок",
+            "name": "hero_subtitle",
+            "type": "textarea",
+            "instructions": "Описание под заголовком",
+            "required": 0,
+            "default_value": "Сучасна освіта для майбутнього вашої дитини",
+            "placeholder": "Введите описание",
+            "rows": 3
+        },
+        {
+            "key": "field_hero_primary_button_text",
+            "label": "Текст главной кнопки",
+            "name": "hero_primary_button_text",
+            "type": "text",
+            "instructions": "Текст для синей кнопки",
+            "required": 0,
+            "default_value": "Дізнатися більше",
+            "placeholder": "Текст кнопки"
+        },
+        {
+            "key": "field_hero_primary_button_link",
+            "label": "Ссылка главной кнопки",
+            "name": "hero_primary_button_link",
+            "type": "url",
+            "instructions": "URL или якорь (#about)",
+            "required": 0,
+            "default_value": "#about",
+            "placeholder": "https:// или #section"
+        },
+        {
+            "key": "field_hero_secondary_button_text",
+            "label": "Текст второй кнопки",
+            "name": "hero_secondary_button_text",
+            "type": "text",
+            "instructions": "Текст для прозрачной кнопки",
+            "required": 0,
+            "default_value": "Зв'язатися з нами",
+            "placeholder": "Текст кнопки"
+        },
+        {
+            "key": "field_hero_secondary_button_link",
+            "label": "Ссылка второй кнопки",
+            "name": "hero_secondary_button_link",
+            "type": "text",
+            "instructions": "URL, телефон (tel:+380...) или email (mailto:...)",
+            "required": 0,
+            "default_value": "tel:+380671234567",
+            "placeholder": "tel:+380... или https://..."
+        },
+        {
+            "key": "field_hero_gallery",
+            "label": "Галерея изображений",
+            "name": "hero_gallery",
+            "type": "gallery",
+            "instructions": "Выберите изображения для слайдера (рекомендуется 2-5 фото)",
+            "required": 0,
+            "min": 1,
+            "max": 10,
+            "insert": "append",
+            "library": "all",
+            "return_format": "array",
+            "preview_size": "medium"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "home.php"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Настройки главной баннерной секции на главной странице"
+}

@@ -1,0 +1,20 @@
+services:
+  wordpress-g-wp:
+    image: wordpress:6.5.2
+    container_name: gavrlsylivka-wp
+    restart: always
+
+    ports:
+      - "8000:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: gavrylivka-db
+      WORDPRESS_DB_USER: admin
+      WORDPRESS_DB_PASSWORD: admin
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+#      - ./php.ini:/usr/local/etc/php/conf.d/custom-php.ini
+
+
+volumes:
+  db_data:

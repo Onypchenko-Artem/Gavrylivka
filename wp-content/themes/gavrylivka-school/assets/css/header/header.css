@@ -1,0 +1,281 @@
+/* Header Styles
+--------------------------------------------- */
+.site-header {
+	background: #ffffff;
+	border-bottom: 1px solid #e5e7eb;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 0 20px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 70px;
+}
+
+/* Site Branding
+--------------------------------------------- */
+.site-branding {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.logo-placeholder {
+	flex-shrink: 0;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #2563eb;
+	border-radius: 50%;
+	color: #ffffff;
+	font-size: 1.25rem;
+	font-weight: 700;
+}
+
+.custom-logo {
+	max-height: 40px;
+	width: auto;
+}
+
+.site-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.site-title {
+	margin: 0;
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.site-title a {
+	color: #1f2937;
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.site-title a:hover {
+	color: #2563eb;
+}
+
+.site-description {
+	margin: 0;
+	font-size: 0.875rem;
+	color: #6b7280;
+	line-height: 1.2;
+}
+
+/* Navigation
+--------------------------------------------- */
+.main-navigation {
+	display: flex;
+	align-items: center;
+}
+
+.nav-menu {
+	display: none;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	gap: 32px;
+}
+
+.nav-menu li {
+	position: relative;
+}
+
+.nav-menu a {
+	display: block;
+	padding: 8px 0;
+	color: #374151;
+	text-decoration: none;
+	font-weight: 500;
+	transition: color 0.2s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus {
+	color: #2563eb;
+}
+
+/* Dropdown menus */
+.nav-menu ul {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: #ffffff;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+	min-width: 200px;
+	padding: 8px 0;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-10px);
+	transition: all 0.2s ease;
+	z-index: 1000;
+}
+
+.nav-menu li:hover > ul,
+.nav-menu li.focus > ul {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.nav-menu ul a {
+	padding: 12px 16px;
+	border-bottom: none;
+}
+
+.nav-menu ul a:hover {
+	background: #f3f4f6;
+}
+
+/* Mobile menu toggle */
+.menu-toggle {
+	background: none;
+	border: none;
+	padding: 8px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	width: 32px;
+	height: 32px;
+	justify-content: center;
+	align-items: center;
+}
+
+.hamburger-line {
+	width: 20px;
+	height: 2px;
+	background: #374151;
+	transition: all 0.3s ease;
+	border-radius: 1px;
+}
+
+.menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
+	transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
+	opacity: 0;
+}
+
+.menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(3) {
+	transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile menu */
+.main-navigation.toggled .nav-menu {
+	display: block;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	background: #ffffff;
+	border-top: 1px solid #e5e7eb;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+}
+
+.main-navigation.toggled .nav-menu li {
+	margin-bottom: 8px;
+}
+
+.main-navigation.toggled .nav-menu a {
+	padding: 12px 0;
+	border-bottom: 1px solid #f3f4f6;
+}
+
+/* Header Contact
+--------------------------------------------- */
+.header-contact {
+	display: flex;
+	align-items: center;
+}
+
+.header-contact .contact-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 20px;
+	background: #2563eb;
+	color: #ffffff;
+	text-decoration: none;
+	border-radius: 6px;
+	font-weight: 500;
+	font-size: 0.875rem;
+	transition: all 0.2s ease;
+	white-space: nowrap;
+}
+
+.header-contact .contact-button:hover {
+	background: #1d4ed8;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.header-contact .contact-icon {
+	font-size: 1rem;
+}
+
+.contact-icon {
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Desktop navigation */
+@media screen and (min-width: 768px) {
+	.menu-toggle {
+		display: none;
+	}
+
+	.nav-menu {
+		display: flex;
+	}
+	
+	.header-container {
+		padding: 0 20px;
+	}
+}
+
+/* Mobile responsive */
+@media screen and (max-width: 767px) {
+	.header-container {
+		padding: 0 16px;
+		min-height: 60px;
+	}
+
+	.site-title {
+		font-size: 1.125rem;
+	}
+
+	.site-description {
+		display: none;
+	}
+
+	.header-contact .contact-button .contact-text {
+		display: none;
+	}
+
+	.header-contact .contact-button {
+		padding: 8px 12px;
+		min-width: 44px;
+		justify-content: center;
+	}
+}
