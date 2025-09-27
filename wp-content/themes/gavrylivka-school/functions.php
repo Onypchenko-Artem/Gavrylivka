@@ -162,6 +162,9 @@ function gavrylivka_school_scripts() {
 		wp_enqueue_style( 'gavrylivka-school-single', get_template_directory_uri() . '/assets/css/single/single.css', array(), _S_VERSION );
 		wp_enqueue_script( 'gavrylivka-school-reading-progress', get_template_directory_uri() . '/assets/js/reading-progress.js', array(), _S_VERSION, true );
 	}
+	
+	// Archive/blog page styles - Force load for debugging
+	wp_enqueue_style( 'gavrylivka-school-archive', get_template_directory_uri() . '/assets/css/archive/archive.css', array(), filemtime(get_template_directory() . '/assets/css/archive/archive.css') );
 
 	wp_enqueue_script( 'gavrylivka-school-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array(), _S_VERSION, true );
 
@@ -170,6 +173,18 @@ function gavrylivka_school_scripts() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'gavrylivka_school_scripts' );
+
+/**
+ * Set posts per page for archive pages
+ */
+function gavrylivka_school_posts_per_page( $query ) {
+	if ( ! is_admin() && $query->is_main_query() ) {
+		if ( is_archive() || is_home() ) {
+			$query->set( 'posts_per_page', 12 );
+		}
+	}
+}
+add_action( 'pre_get_posts', 'gavrylivka_school_posts_per_page' );
 
 /**
  * Implement the Custom Header feature.
