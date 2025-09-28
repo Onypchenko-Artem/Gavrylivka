@@ -40,6 +40,17 @@
 	transform: scale(1.05);
 }
 
+/* Default thumbnail styles for news section */
+.post-thumbnail .default-thumbnail {
+	background: linear-gradient(135deg, #3b82f6, #4f46e5, #7c3aed);
+	filter: brightness(1.1);
+}
+
+.post-card:hover .post-thumbnail .default-thumbnail {
+	filter: brightness(1.2);
+	transform: scale(1.05);
+}
+
 .post-content {
 	padding: 24px;
 }

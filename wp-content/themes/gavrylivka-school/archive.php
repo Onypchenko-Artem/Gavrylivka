@@ -10,6 +10,8 @@
 get_header();
 ?>
 
+	<?php gavrylivka_school_breadcrumbs(); ?>
+
 	<main id="primary" class="site-main archive-main">
 
 		<?php if ( have_posts() ) : ?>

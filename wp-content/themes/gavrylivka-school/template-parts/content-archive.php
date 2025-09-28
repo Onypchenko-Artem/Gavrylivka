@@ -10,13 +10,11 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class('news-card'); ?>>
-	<?php if ( has_post_thumbnail() ) : ?>
-		<div class="news-card-image">
-			<a href="<?php echo esc_url( get_permalink() ); ?>" rel="bookmark">
-				<?php the_post_thumbnail('medium', array('class' => 'news-thumbnail')); ?>
-			</a>
-		</div>
-	<?php endif; ?>
+	<div class="news-card-image">
+		<a href="<?php echo esc_url( get_permalink() ); ?>" rel="bookmark">
+			<?php echo gavrylivka_school_get_news_thumbnail(); ?>
+		</a>
+	</div>
 	
 	<div class="news-card-content">
 		<header class="news-card-header">

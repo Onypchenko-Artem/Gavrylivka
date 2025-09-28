@@ -10,6 +10,8 @@
 get_header();
 ?>
 
+<?php gavrylivka_school_breadcrumbs(); ?>
+
 <main id="primary" class="site-main archive-main">
     <header class="page-header">
         <h1 class="page-title">Всі новини</h1>
@@ -24,7 +26,7 @@ get_header();
     
     $news_query = new WP_Query(array(
         'post_type' => 'post',
-        'posts_per_page' => 12,
+        'posts_per_page' => 6,
         'paged' => $paged,
         'post_status' => 'publish'
     ));
@@ -40,23 +42,8 @@ get_header();
         </div><!-- .news-grid -->
 
         <?php
-        // Pagination
-        $total_pages = $news_query->max_num_pages;
-        if ($total_pages > 1) {
-            echo '<nav class="posts-navigation">';
-            echo '<div class="nav-links">';
-            
-            if ($paged > 1) {
-                echo '<a href="' . get_pagenum_link($paged - 1) . '" class="nav-previous">← Попередня</a>';
-            }
-            
-            if ($paged < $total_pages) {
-                echo '<a href="' . get_pagenum_link($paged + 1) . '" class="nav-next">Наступна →</a>';
-            }
-            
-            echo '</div>';
-            echo '</nav>';
-        }
+        // Pagination with numbered pages
+        gavrylivka_school_pagination($news_query);
         
         wp_reset_postdata();
     else :

@@ -10,6 +10,8 @@
 get_header();
 ?>
 
+	<?php gavrylivka_school_breadcrumbs(); ?>
+
 	<main id="primary" class="site-main">
 
 		<?php
@@ -19,6 +21,9 @@ get_header();
 			get_template_part( 'template-parts/content', get_post_type() );
 
 		endwhile; // End of the loop.
+		
+		// Related news section
+		get_template_part( 'template-parts/single/related-news' );
 		?>
 
 	</main><!-- #main -->

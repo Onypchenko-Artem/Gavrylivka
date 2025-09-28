@@ -96,4 +96,56 @@
 			menuItem.classList.toggle( 'focus' );
 		}
 	}
+
+	// Mobile accordion functionality
+	function handleAccordionClick(event) {
+		var target = event.target;
+		var link = null;
+		
+		// Check if clicked element is a link with submenu
+		if (target.tagName === 'A') {
+			var parentItem = target.parentNode;
+			if (parentItem && (parentItem.classList.contains('menu-item-has-children') || parentItem.classList.contains('page_item_has_children'))) {
+				link = target;
+			}
+		}
+		
+		// Only work in mobile mode
+		if (link && siteNavigation.classList.contains('toggled')) {
+			// Check if event is cancelable before preventing default
+			if (event.cancelable) {
+				event.preventDefault();
+			}
+			
+			var parentLi = link.parentNode;
+			var isOpen = parentLi.classList.contains('open');
+			
+			// Close all other open items
+			var allItems = siteNavigation.querySelectorAll('.menu-item-has-children, .page_item_has_children');
+			for (var i = 0; i < allItems.length; i++) {
+				if (allItems[i] !== parentLi) {
+					allItems[i].classList.remove('open');
+				}
+			}
+			
+			// Toggle current item
+			if (isOpen) {
+				parentLi.classList.remove('open');
+			} else {
+				parentLi.classList.add('open');
+			}
+			
+			// Return false to prevent navigation
+			return false;
+		}
+	}
+	
+	// Add event listeners for both click and touchend
+	siteNavigation.addEventListener('click', handleAccordionClick);
+	siteNavigation.addEventListener('touchend', function(event) {
+		// Only handle touchend if it's not a scroll
+		if (event.cancelable) {
+			handleAccordionClick(event);
+		}
+	});
 }() );

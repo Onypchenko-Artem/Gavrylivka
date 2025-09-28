@@ -27,11 +27,7 @@
                         else :
                             ?>
                             <div class="logo-placeholder">
-                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="40" height="40" rx="8" fill="#2563eb"/>
-                                    <path d="M12 16h16v2H12v-2zm0 4h16v2H12v-2zm0 4h12v2H12v-2z" fill="white"/>
-                                </svg>
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/school.svg" alt="phone">
                             </div>
                         <?php
                         endif;
@@ -74,7 +70,13 @@
                                     <img src="<?php echo get_template_directory_uri(); ?>/assets/img/location.svg"
                                          alt="location">
                                 </span>
-                            <span>с. Гаврилівка, вул. Паркова, 90</span>
+                            <a href="https://maps.app.goo.gl/bx29hMD731EAzV6s5"
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="address-link"
+                               title="Відкрити на карті">
+                                с. Гаврилівка, вул. Паркова, 90
+                            </a>
                         </div>
                         <div class="footer-contact-item">
 								<span class="contact-icon">
