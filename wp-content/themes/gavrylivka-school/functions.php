@@ -176,6 +176,12 @@ function gavrylivka_school_scripts() {
 	
 	// Archive/blog page styles - Force load for debugging
 	wp_enqueue_style( 'gavrylivka-school-archive', get_template_directory_uri() . '/assets/css/archive/archive.css', array(), filemtime(get_template_directory() . '/assets/css/archive/archive.css') );
+	
+	// Gallery page styles
+	if ( is_page_template( 'page-gallery.php' ) ) {
+		wp_enqueue_style( 'gavrylivka-school-gallery', get_template_directory_uri() . '/assets/css/gallery/gallery.css', array(), _S_VERSION );
+		wp_enqueue_script( 'gavrylivka-school-lightbox', get_template_directory_uri() . '/assets/js/lightbox.js', array(), _S_VERSION, true );
+	}
 
 	wp_enqueue_script( 'gavrylivka-school-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array(), _S_VERSION, true );
 
