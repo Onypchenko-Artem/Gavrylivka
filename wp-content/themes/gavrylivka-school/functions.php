@@ -180,7 +180,7 @@ function gavrylivka_school_scripts() {
 	// Gallery page styles
 	if ( is_page_template( 'page-gallery.php' ) ) {
 		wp_enqueue_style( 'gavrylivka-school-gallery', get_template_directory_uri() . '/assets/css/gallery/gallery.css', array(), _S_VERSION );
-		wp_enqueue_script( 'gavrylivka-school-lightbox', get_template_directory_uri() . '/assets/js/lightbox.js', array(), _S_VERSION, true );
+		wp_enqueue_script( 'gavrylivka-school-simple-lightbox', get_template_directory_uri() . '/assets/js/simple-lightbox.js', array(), _S_VERSION, true );
 	}
 
 	wp_enqueue_script( 'gavrylivka-school-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array(), _S_VERSION, true );
