@@ -45,6 +45,10 @@ function gavrylivka_school_setup() {
 		* @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
 		*/
 	add_theme_support( 'post-thumbnails' );
+	
+	// Add custom image sizes for news
+	add_image_size( 'news-thumbnail', 400, 225, true ); // 16:9 aspect ratio
+	add_image_size( 'news-large', 800, 450, true ); // 16:9 aspect ratio for larger displays
 
 	// This theme uses wp_nav_menu() in multiple locations.
 	register_nav_menus(
@@ -145,17 +149,33 @@ function gavrylivka_school_scripts() {
 	wp_enqueue_style( 'gavrylivka-school-layout', get_template_directory_uri() . '/assets/css/layout/layout.css', array(), _S_VERSION );
 	wp_enqueue_style( 'gavrylivka-school-header', get_template_directory_uri() . '/assets/css/header/header.css', array(), _S_VERSION );
 	wp_enqueue_style( 'gavrylivka-school-footer', get_template_directory_uri() . '/assets/css/footer/footer.css', array(), _S_VERSION );
+	wp_enqueue_style( 'gavrylivka-school-breadcrumbs', get_template_directory_uri() . '/assets/css/components/breadcrumbs.css', array(), _S_VERSION );
 	
 	// Home page sections
 	if ( is_page_template( 'home.php' ) || is_front_page() ) {
 		wp_enqueue_style( 'gavrylivka-school-hero-section', get_template_directory_uri() . '/assets/css/home/hero-section.css', array(), _S_VERSION );
 		wp_enqueue_style( 'gavrylivka-school-about-section', get_template_directory_uri() . '/assets/css/home/about-section.css', array(), _S_VERSION );
 		wp_enqueue_style( 'gavrylivka-school-news-section', get_template_directory_uri() . '/assets/css/home/news-section.css', array(), _S_VERSION );
-		wp_enqueue_style( 'gavrylivka-school-contact-section', get_template_directory_uri() . '/assets/css/home/contact-section.css', array(), _S_VERSION );
 		
 		// Hero slider JavaScript
 		wp_enqueue_script( 'gavrylivka-school-hero-slider', get_template_directory_uri() . '/assets/js/hero-slider.js', array(), _S_VERSION, true );
 	}
+	
+	// Single post/news page styles
+	if ( is_single() ) {
+		wp_enqueue_style( 'gavrylivka-school-single', get_template_directory_uri() . '/assets/css/single/single.css', array(), _S_VERSION );
+		
+		// Swiper for related news slider
+		wp_enqueue_style( 'swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0' );
+		wp_enqueue_script( 'swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), '11.0.0', true );
+		
+		// Related news slider script
+		wp_enqueue_script( 'gavrylivka-school-related-news-slider', get_template_directory_uri() . '/assets/js/related-news-slider.js', array('swiper-js'), _S_VERSION, true );
+		wp_enqueue_script( 'gavrylivka-school-reading-progress', get_template_directory_uri() . '/assets/js/reading-progress.js', array(), _S_VERSION, true );
+	}
+	
+	// Archive/blog page styles - Force load for debugging
+	wp_enqueue_style( 'gavrylivka-school-archive', get_template_directory_uri() . '/assets/css/archive/archive.css', array(), filemtime(get_template_directory() . '/assets/css/archive/archive.css') );
 
 	wp_enqueue_script( 'gavrylivka-school-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array(), _S_VERSION, true );
 
@@ -164,6 +184,18 @@ function gavrylivka_school_scripts() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'gavrylivka_school_scripts' );
+
+/**
+ * Set posts per page for archive pages
+ */
+function gavrylivka_school_posts_per_page( $query ) {
+	if ( ! is_admin() && $query->is_main_query() ) {
+		if ( is_archive() || is_home() ) {
+			$query->set( 'posts_per_page', 6 );
+		}
+	}
+}
+add_action( 'pre_get_posts', 'gavrylivka_school_posts_per_page' );
 
 /**
  * Implement the Custom Header feature.
@@ -309,4 +341,185 @@ function gavrylivka_school_footer_menu_fallback() {
 	echo '<li><a href="' . esc_url( home_url( '/about/' ) ) . '">Про нас</a></li>';
 	echo '<li><a href="' . esc_url( home_url( '/contact/' ) ) . '">Контакти</a></li>';
 	echo '</ul>';
+}
+
+/**
+ * Get news thumbnail image HTML
+ * Returns featured image if available, otherwise returns default placeholder
+ */
+function gavrylivka_school_get_news_thumbnail( $size = 'news-thumbnail', $class = 'news-thumbnail' ) {
+	if ( has_post_thumbnail() ) {
+		return get_the_post_thumbnail( null, $size, array('class' => $class) );
+	} else {
+		$default_class = $class . ' default-thumbnail';
+		return sprintf(
+			'<img src="%s" alt="%s" class="%s">',
+			esc_url( get_template_directory_uri() . '/assets/img/default-news.svg' ),
+			esc_attr( get_the_title() ),
+			esc_attr( $default_class )
+		);
+	}
+}
+
+/**
+ * Custom pagination function with numbered pages and arrows
+ */
+function gavrylivka_school_pagination( $query_obj = null, $echo = true ) {
+	global $wp_query;
+	
+	$query = $query_obj ? $query_obj : $wp_query;
+	$total_pages = $query->max_num_pages;
+	
+	if ( $total_pages <= 1 ) {
+		return;
+	}
+	
+	$current_page = max( 1, get_query_var( 'paged' ) );
+	$range = 2; // Number of pages to show around current page
+	
+	$output = '<nav class="pagination-wrapper" aria-label="Навігація по сторінках">';
+	$output .= '<ul class="pagination">';
+	
+	// Previous arrow
+	if ( $current_page > 1 ) {
+		$output .= '<li class="pagination-item">';
+		$output .= '<a href="' . get_pagenum_link( $current_page - 1 ) . '" class="pagination-link pagination-prev" aria-label="Попередня сторінка">';
+		$output .= '<span aria-hidden="true">‹</span>';
+		$output .= '</a>';
+		$output .= '</li>';
+	}
+	
+	// First page
+	if ( $current_page > $range + 1 ) {
+		$output .= '<li class="pagination-item">';
+		$output .= '<a href="' . get_pagenum_link( 1 ) . '" class="pagination-link">1</a>';
+		$output .= '</li>';
+		
+		if ( $current_page > $range + 2 ) {
+			$output .= '<li class="pagination-item pagination-dots"><span>…</span></li>';
+		}
+	}
+	
+	// Pages around current page
+	for ( $i = max( 1, $current_page - $range ); $i <= min( $total_pages, $current_page + $range ); $i++ ) {
+		$output .= '<li class="pagination-item">';
+		if ( $i == $current_page ) {
+			$output .= '<span class="pagination-link pagination-current" aria-current="page">' . $i . '</span>';
+		} else {
+			$output .= '<a href="' . get_pagenum_link( $i ) . '" class="pagination-link">' . $i . '</a>';
+		}
+		$output .= '</li>';
+	}
+	
+	// Last page
+	if ( $current_page < $total_pages - $range ) {
+		if ( $current_page < $total_pages - $range - 1 ) {
+			$output .= '<li class="pagination-item pagination-dots"><span>…</span></li>';
+		}
+		
+		$output .= '<li class="pagination-item">';
+		$output .= '<a href="' . get_pagenum_link( $total_pages ) . '" class="pagination-link">' . $total_pages . '</a>';
+		$output .= '</li>';
+	}
+	
+	// Next arrow
+	if ( $current_page < $total_pages ) {
+		$output .= '<li class="pagination-item">';
+		$output .= '<a href="' . get_pagenum_link( $current_page + 1 ) . '" class="pagination-link pagination-next" aria-label="Наступна сторінка">';
+		$output .= '<span aria-hidden="true">›</span>';
+		$output .= '</a>';
+		$output .= '</li>';
+	}
+	
+	$output .= '</ul>';
+	$output .= '</nav>';
+	
+	if ( $echo ) {
+		echo $output;
+	} else {
+		return $output;
+	}
+}
+
+/**
+ * Breadcrumbs function
+ */
+function gavrylivka_school_breadcrumbs( $echo = true ) {
+	// Don't show breadcrumbs on homepage
+	if ( is_front_page() ) {
+		return;
+	}
+	
+	$separator = '<span class="breadcrumb-separator">›</span>';
+	$home_text = 'Головна';
+	$home_url = home_url( '/' );
+	
+	$output = '<nav class="breadcrumbs" aria-label="Навігаційні стежки">';
+	$output .= '<ol class="breadcrumb-list">';
+	
+	// Home link
+	$output .= '<li class="breadcrumb-item">';
+	$output .= '<a href="' . esc_url( $home_url ) . '" class="breadcrumb-link">' . esc_html( $home_text ) . '</a>';
+	$output .= '</li>';
+	
+	// Current page logic
+	if ( is_category() || is_single() ) {
+		// Category page
+		if ( is_category() ) {
+			$output .= '<li class="breadcrumb-separator">' . $separator . '</li>';
+			$output .= '<li class="breadcrumb-item">';
+			$output .= '<span class="breadcrumb-current">' . single_cat_title( '', false ) . '</span>';
+			$output .= '</li>';
+		}
+		// Single post
+		elseif ( is_single() ) {
+			// Add "Новини" link for blog posts
+			$output .= '<li class="breadcrumb-separator">' . $separator . '</li>';
+			$output .= '<li class="breadcrumb-item">';
+			$output .= '<a href="' . esc_url( get_permalink( get_option('page_for_posts') ) ) . '" class="breadcrumb-link">Новини</a>';
+			$output .= '</li>';
+			
+			$output .= '<li class="breadcrumb-separator">' . $separator . '</li>';
+			$output .= '<li class="breadcrumb-item">';
+			$output .= '<span class="breadcrumb-current">' . get_the_title() . '</span>';
+			$output .= '</li>';
+		}
+	}
+	// Page
+	elseif ( is_page() ) {
+		$output .= '<li class="breadcrumb-separator">' . $separator . '</li>';
+		$output .= '<li class="breadcrumb-item">';
+		$output .= '<span class="breadcrumb-current">' . get_the_title() . '</span>';
+		$output .= '</li>';
+	}
+	// Archive
+	elseif ( is_archive() ) {
+		$output .= '<li class="breadcrumb-separator">' . $separator . '</li>';
+		$output .= '<li class="breadcrumb-item">';
+		$output .= '<span class="breadcrumb-current">Архів</span>';
+		$output .= '</li>';
+	}
+	// Search
+	elseif ( is_search() ) {
+		$output .= '<li class="breadcrumb-separator">' . $separator . '</li>';
+		$output .= '<li class="breadcrumb-item">';
+		$output .= '<span class="breadcrumb-current">Результати пошуку</span>';
+		$output .= '</li>';
+	}
+	// 404
+	elseif ( is_404() ) {
+		$output .= '<li class="breadcrumb-separator">' . $separator . '</li>';
+		$output .= '<li class="breadcrumb-item">';
+		$output .= '<span class="breadcrumb-current">404 - Сторінка не знайдена</span>';
+		$output .= '</li>';
+	}
+	
+	$output .= '</ol>';
+	$output .= '</nav>';
+	
+	if ( $echo ) {
+		echo $output;
+	} else {
+		return $output;
+	}
 }

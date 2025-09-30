@@ -26,11 +26,9 @@
 				while ($recent_posts->have_posts()) : $recent_posts->the_post();
 					?>
 					<article class="post-card">
-						<?php if (has_post_thumbnail()) : ?>
-							<div class="post-thumbnail">
-								<?php the_post_thumbnail('medium'); ?>
-							</div>
-						<?php endif; ?>
+						<div class="post-thumbnail">
+							<?php echo gavrylivka_school_get_news_thumbnail('news-thumbnail', 'default-thumbnail'); ?>
+						</div>
 						
 						<div class="post-content">
 							<div class="post-meta">
@@ -60,7 +58,7 @@
 
 		<?php if ($recent_posts->have_posts()) : ?>
 			<div class="section-footer">
-				<a href="<?php echo esc_url(get_permalink(get_option('page_for_posts'))); ?>" class="btn btn-outline">Всі новини</a>
+				<a href="/news" class="btn btn-outline">Всі новини</a>
 			</div>
 		<?php endif; ?>
 	</div>

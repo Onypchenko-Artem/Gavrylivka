@@ -1,0 +1,53 @@
+<svg width="400" height="225" viewBox="0 0 400 225" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="225" fill="url(#bgGradient)"/>
+  
+  <!-- Gradient definitions -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4f46e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="schoolGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#f1f5f9;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- School building icon (simplified) -->
+  <g transform="translate(200, 112.5)">
+    <!-- Main building -->
+    <rect x="-60" y="-40" width="120" height="80" fill="url(#schoolGradient)" rx="8"/>
+    
+    <!-- Roof -->
+    <polygon points="-70,-40 0,-65 70,-40" fill="#1f2937" opacity="0.8"/>
+    
+    <!-- Windows -->
+    <rect x="-45" y="-25" width="15" height="15" fill="#3b82f6" opacity="0.6" rx="2"/>
+    <rect x="-20" y="-25" width="15" height="15" fill="#3b82f6" opacity="0.6" rx="2"/>
+    <rect x="5" y="-25" width="15" height="15" fill="#3b82f6" opacity="0.6" rx="2"/>
+    <rect x="30" y="-25" width="15" height="15" fill="#3b82f6" opacity="0.6" rx="2"/>
+    
+    <rect x="-45" y="0" width="15" height="15" fill="#3b82f6" opacity="0.6" rx="2"/>
+    <rect x="-20" y="0" width="15" height="15" fill="#3b82f6" opacity="0.6" rx="2"/>
+    <rect x="5" y="0" width="15" height="15" fill="#3b82f6" opacity="0.6" rx="2"/>
+    <rect x="30" y="0" width="15" height="15" fill="#3b82f6" opacity="0.6" rx="2"/>
+    
+    <!-- Door -->
+    <rect x="-8" y="10" width="16" height="30" fill="#1f2937" opacity="0.7" rx="3"/>
+    <circle cx="5" cy="25" r="1.5" fill="#ffffff" opacity="0.8"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="200" y="185" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="600" opacity="0.9">
+    Гаврилівський ліцей
+  </text>
+  
+  <!-- Decorative elements -->
+  <circle cx="80" cy="60" r="3" fill="white" opacity="0.4"/>
+  <circle cx="320" cy="50" r="2" fill="white" opacity="0.3"/>
+  <circle cx="350" cy="180" r="4" fill="white" opacity="0.2"/>
+  <circle cx="50" cy="170" r="2.5" fill="white" opacity="0.35"/>
+</svg>
