@@ -1,0 +1,111 @@
+/* Gallery Page Styles */
+
+.gallery-page .entry-title {
+	margin-bottom: 1.25rem;
+	font-size: 2rem;
+}
+
+/* Ограничение ширины главного контейнера галереи */
+.site-main.gallery-page,
+#primary.gallery-page {
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+.gallery-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 12px;
+}
+
+@media (min-width: 600px) {
+	.gallery-grid {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 14px;
+	}
+}
+
+@media (min-width: 960px) {
+	.gallery-grid {
+		grid-template-columns: repeat(4, 1fr);
+		gap: 16px;
+	}
+}
+
+.gallery-item {
+	display: block;
+	position: relative;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #f3f4f6;
+	border: 1px solid #e5e7eb;
+	transition: transform .15s ease-in-out, box-shadow .15s ease-in-out;
+	height: clamp(180px, 17.36vw, 250px);
+	width: 100%;
+}
+
+.gallery-item:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 18px rgba(0,0,0,.08);
+}
+
+.gallery-item img {
+	display: block !important;
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover !important;
+	object-position: center !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* Optional: subtle zoom on hover */
+.gallery-item img { 
+	transition: transform .25s ease; 
+}
+
+.gallery-item:hover img { 
+	transform: scale(1.03); 
+}
+
+/* Дополнительные селекторы для изображений */
+.gallery-grid .gallery-item img,
+.gallery-page .gallery-item img,
+.gallery-article .gallery-item img {
+	display: block !important;
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover !important;
+	object-position: center !important;
+	position: absolute !important;
+	top: 0 !important;
+	left: 0 !important;
+}
+
+/* Gallery pagination info */
+.gallery-pagination-info {
+	text-align: center;
+	margin: 30px 0 20px;
+	padding: 15px;
+	background: #f8fafc;
+	border-radius: 8px;
+	border: 1px solid #e5e7eb;
+}
+
+.gallery-pagination-info p {
+	margin: 0;
+	color: #6b7280;
+	font-size: 0.95rem;
+}
+
+/* If Gutenberg Gallery block is used, align styles */
+.wp-block-gallery {
+	gap: 16px;
+}
+
+.wp-block-image img {
+	border-radius: 8px;
+	overflow: hidden;
+}
