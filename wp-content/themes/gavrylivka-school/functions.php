@@ -9,7 +9,7 @@
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.5' );
+	define( '_S_VERSION', '1.0.8' );
 }
 
 /**
@@ -616,12 +616,50 @@ function gavrylivka_school_document_tile( $attachment, $title = '', $echo = true
 		return '';
 	}
 	
-	// Build HTML
-	$output = sprintf(
-		'<a href="%s" class="document-tile" download target="_blank">%s</a>',
-		esc_url( $file_url ),
-		esc_html( $title )
+	// Get document icon
+	$extension = strtolower( pathinfo( $file_url, PATHINFO_EXTENSION ) );
+	$icon_map = array(
+		'doc'  => 'word.svg',
+		'docx' => 'word.svg',
+		'xls'  => 'excel.svg',
+		'xlsx' => 'excel.svg',
+		'pdf'  => 'pdf.svg',
+		'ppt'  => 'powerpoint.svg',
+		'pptx' => 'powerpoint.svg',
 	);
+	
+	$icon_file = isset( $icon_map[ $extension ] ) ? $icon_map[ $extension ] : null;
+	$icon_url = $icon_file ? get_template_directory_uri() . '/assets/img/' . $icon_file : null;
+	
+	// Build HTML
+	$output = '<div class="document-tile">';
+	
+	// Main link (opens in browser)
+	$output .= sprintf(
+		'<a href="%s" class="document-tile-link" target="_blank">',
+		esc_url( $file_url )
+	);
+	
+	if ( $icon_url ) {
+		$output .= sprintf( '<img src="%s" class="document-icon" alt="" />', esc_url( $icon_url ) );
+	}
+	
+	$output .= sprintf( '<span class="document-title">%s</span>', esc_html( $title ) );
+	$output .= '</a>';
+	
+	// Download icon (downloads file)
+	$output .= sprintf(
+		'<a href="%s" class="document-download-icon" download title="Завантажити">',
+		esc_url( $file_url )
+	);
+	$output .= '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
+	$output .= '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>';
+	$output .= '<polyline points="7 10 12 15 17 10"></polyline>';
+	$output .= '<line x1="12" y1="15" x2="12" y2="3"></line>';
+	$output .= '</svg>';
+	$output .= '</a>';
+	
+	$output .= '</div>';
 	
 	if ( $echo ) {
 		echo $output;
