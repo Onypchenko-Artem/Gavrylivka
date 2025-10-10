@@ -79,9 +79,9 @@
 					?>
 					
 					<!-- Mobile contact button -->
-					<a href="tel:+380671234567" class="mobile-contact-button">
+					<a href="mailto:gavrilovkanvk2016@ukr.net" class="mobile-contact-button">
 						<span class="contact-icon">
-							<img src="<?php echo get_template_directory_uri(); ?>/assets/img/phone.svg" alt="phone">
+							<img src="<?php echo get_template_directory_uri(); ?>/assets/img/mail.svg" alt="mail">
 						</span>
 						<span class="contact-text">Зв'язатися з нами</span>
 					</a>
@@ -89,9 +89,9 @@
 			</nav><!-- #site-navigation -->
 
 			<div class="header-contact">
-				<a href="tel:+380671234567" class="contact-button phone-button">
+				<a href="mailto:gavrilovkanvk2016@ukr.net" class="contact-button phone-button">
 					<span class="contact-icon">
-                        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/phone.svg" alt="phone">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/mail.svg" alt="mail">
                     </span>
 					<span class="contact-text">Зв'язатися</span>
 				</a>
