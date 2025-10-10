@@ -189,6 +189,12 @@ function gavrylivka_school_scripts() {
 		wp_enqueue_style( 'gavrylivka-school-team', get_template_directory_uri() . '/assets/css/team/team.css', array(), _S_VERSION );
 	}
 	
+	// Agenda page styles
+	if ( is_page_template( 'page-agenda.php' ) ) {
+		wp_enqueue_style( 'gavrylivka-school-agenda', get_template_directory_uri() . '/assets/css/agenda/agenda.css', array(), _S_VERSION );
+		wp_enqueue_script( 'gavrylivka-school-agenda-tabs', get_template_directory_uri() . '/assets/js/agenda-tabs.js', array(), _S_VERSION, true );
+	}
+	
 	// Also load lightbox on any page that might have gallery content
 	if ( is_singular() && ( has_shortcode( get_the_content(), 'gallery' ) || has_block( 'gallery' ) ) ) {
 		wp_enqueue_style( 'gavrylivka-school-gallery', get_template_directory_uri() . '/assets/css/gallery/gallery.css', array(), _S_VERSION );
@@ -720,3 +726,59 @@ function gavrylivka_school_auto_document_tiles( $content ) {
 	return $content;
 }
 add_filter( 'the_content', 'gavrylivka_school_auto_document_tiles', 20 );
+
+/**
+ * Parse CSV file and generate HTML table
+ *
+ * @param string $file_path Path to CSV file.
+ * @return string HTML table.
+ */
+function gavrylivka_school_parse_csv_to_table( $file_path ) {
+	if ( ! file_exists( $file_path ) ) {
+		return '<p class="csv-error">' . esc_html__( 'CSV файл не знайдено.', 'gavrylivka-school' ) . '</p>';
+	}
+
+	// Read file content
+	$content = file_get_contents( $file_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+	if ( false === $content ) {
+		return '<p class="csv-error">' . esc_html__( 'Не вдалося прочитати CSV файл.', 'gavrylivka-school' ) . '</p>';
+	}
+
+	// Parse CSV
+	$lines = array_map( 'str_getcsv', explode( "\n", $content ) );
+	$lines = array_filter( $lines, function( $line ) {
+		return ! empty( array_filter( $line ) );
+	});
+
+	if ( empty( $lines ) ) {
+		return '<p class="csv-error">' . esc_html__( 'CSV файл порожній.', 'gavrylivka-school' ) . '</p>';
+	}
+
+	// Start building table
+	$html = '<div class="agenda-table-wrapper">';
+	$html .= '<table class="agenda-table">';
+	
+	// First row as header
+	$header = array_shift( $lines );
+	$html .= '<thead><tr>';
+	foreach ( $header as $cell ) {
+		$html .= '<th>' . esc_html( $cell ) . '</th>';
+	}
+	$html .= '</tr></thead>';
+	
+	// Rest of rows as body
+	$html .= '<tbody>';
+	foreach ( $lines as $row ) {
+		$html .= '<tr>';
+		foreach ( $row as $cell ) {
+			$html .= '<td>' . esc_html( $cell ) . '</td>';
+		}
+		$html .= '</tr>';
+	}
+	$html .= '</tbody>';
+	
+	$html .= '</table>';
+	$html .= '</div>';
+	
+	return $html;
+}
