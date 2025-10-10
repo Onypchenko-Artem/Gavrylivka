@@ -13,7 +13,7 @@ services:
       WORDPRESS_DB_PASSWORD: admin
     volumes:
       - ./wp-content:/var/www/html/wp-content
-#      - ./php.ini:/usr/local/etc/php/conf.d/custom-php.ini
+      - ./php.ini:/usr/local/etc/php/conf.d/uploads.ini
 
 
 volumes:

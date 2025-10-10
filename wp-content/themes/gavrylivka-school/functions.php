@@ -9,7 +9,7 @@
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.0' );
+	define( '_S_VERSION', '1.0.2' );
 }
 
 /**
@@ -177,8 +177,19 @@ function gavrylivka_school_scripts() {
 	// Archive/blog page styles - Force load for debugging
 	wp_enqueue_style( 'gavrylivka-school-archive', get_template_directory_uri() . '/assets/css/archive/archive.css', array(), filemtime(get_template_directory() . '/assets/css/archive/archive.css') );
 	
-	// Gallery page styles
-	if ( is_page_template( 'page-gallery.php' ) ) {
+	// Gallery page styles and lightbox script
+	if ( is_page_template( 'page-gallery.php' ) || is_page( 'gallery' ) || has_shortcode( get_the_content(), 'gallery' ) ) {
+		wp_enqueue_style( 'gavrylivka-school-gallery', get_template_directory_uri() . '/assets/css/gallery/gallery.css', array(), _S_VERSION );
+		wp_enqueue_script( 'gavrylivka-school-simple-lightbox', get_template_directory_uri() . '/assets/js/simple-lightbox.js', array(), _S_VERSION, true );
+	}
+	
+	// Team page styles
+	if ( is_page_template( 'page-team.php' ) ) {
+		wp_enqueue_style( 'gavrylivka-school-team', get_template_directory_uri() . '/assets/css/team/team.css', array(), _S_VERSION );
+	}
+	
+	// Also load lightbox on any page that might have gallery content
+	if ( is_singular() && ( has_shortcode( get_the_content(), 'gallery' ) || has_block( 'gallery' ) ) ) {
 		wp_enqueue_style( 'gavrylivka-school-gallery', get_template_directory_uri() . '/assets/css/gallery/gallery.css', array(), _S_VERSION );
 		wp_enqueue_script( 'gavrylivka-school-simple-lightbox', get_template_directory_uri() . '/assets/js/simple-lightbox.js', array(), _S_VERSION, true );
 	}
