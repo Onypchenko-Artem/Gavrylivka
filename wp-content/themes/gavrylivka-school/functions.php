@@ -9,7 +9,7 @@
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.2' );
+	define( '_S_VERSION', '1.0.5' );
 }
 
 /**
@@ -150,6 +150,7 @@ function gavrylivka_school_scripts() {
 	wp_enqueue_style( 'gavrylivka-school-header', get_template_directory_uri() . '/assets/css/header/header.css', array(), _S_VERSION );
 	wp_enqueue_style( 'gavrylivka-school-footer', get_template_directory_uri() . '/assets/css/footer/footer.css', array(), _S_VERSION );
 	wp_enqueue_style( 'gavrylivka-school-breadcrumbs', get_template_directory_uri() . '/assets/css/components/breadcrumbs.css', array(), _S_VERSION );
+	wp_enqueue_style( 'gavrylivka-school-documents', get_template_directory_uri() . '/assets/css/components/documents.css', array(), _S_VERSION );
 	
 	// Home page sections
 	if ( is_page_template( 'home.php' ) || is_front_page() ) {
@@ -540,3 +541,144 @@ function gavrylivka_school_breadcrumbs( $echo = true ) {
 		return $output;
 	}
 }
+
+/**
+ * Enable upload of Word documents and PowerPoint presentations
+ */
+function gavrylivka_school_custom_upload_mimes( $mimes ) {
+	// Microsoft Word
+	$mimes['doc']  = 'application/msword';
+	$mimes['docx'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+	
+	// Microsoft PowerPoint
+	$mimes['ppt']  = 'application/vnd.ms-powerpoint';
+	$mimes['pptx'] = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+	
+	// Microsoft Excel (bonus)
+	$mimes['xls']  = 'application/vnd.ms-excel';
+	$mimes['xlsx'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+	
+	return $mimes;
+}
+add_filter( 'upload_mimes', 'gavrylivka_school_custom_upload_mimes' );
+
+/**
+ * Fix MIME type check for MS Office files
+ */
+function gavrylivka_school_fix_mime_type_check( $data, $file, $filename, $mimes ) {
+	$wp_filetype = wp_check_filetype( $filename, $mimes );
+
+	$ext = $wp_filetype['ext'];
+	$type = $wp_filetype['type'];
+	$proper_filename = $data['proper_filename'];
+
+	// Fix for .docx, .pptx, .xlsx files
+	if ( $ext && $type ) {
+		$data['ext'] = $ext;
+		$data['type'] = $type;
+	}
+
+	return $data;
+}
+add_filter( 'wp_check_filetype_and_ext', 'gavrylivka_school_fix_mime_type_check', 10, 4 );
+
+/**
+ * Display document as a tile
+ * 
+ * @param int|string $attachment Either attachment ID or file URL
+ * @param string $title Optional custom title. If empty, uses attachment title or filename
+ * @param bool $echo Echo or return output
+ * @return string HTML markup for document tile
+ */
+function gavrylivka_school_document_tile( $attachment, $title = '', $echo = true ) {
+	// Get file URL
+	if ( is_numeric( $attachment ) ) {
+		$file_url = wp_get_attachment_url( $attachment );
+		$attachment_id = $attachment;
+		
+		if ( empty( $title ) ) {
+			$title = get_the_title( $attachment_id );
+		}
+	} else {
+		$file_url = $attachment;
+		$attachment_id = attachment_url_to_postid( $file_url );
+		
+		if ( empty( $title ) ) {
+			if ( $attachment_id ) {
+				$title = get_the_title( $attachment_id );
+			} else {
+				$title = basename( $file_url );
+			}
+		}
+	}
+	
+	if ( ! $file_url ) {
+		return '';
+	}
+	
+	// Build HTML
+	$output = sprintf(
+		'<a href="%s" class="document-tile" download target="_blank">%s</a>',
+		esc_url( $file_url ),
+		esc_html( $title )
+	);
+	
+	if ( $echo ) {
+		echo $output;
+	} else {
+		return $output;
+	}
+}
+
+/**
+ * Shortcode for displaying document tile
+ * Usage: [document id="123" title="Custom Title"]
+ * or: [document url="https://example.com/file.docx" title="Custom Title"]
+ */
+function gavrylivka_school_document_shortcode( $atts ) {
+	$atts = shortcode_atts( array(
+		'id'    => '',
+		'url'   => '',
+		'title' => '',
+	), $atts );
+	
+	if ( ! empty( $atts['id'] ) ) {
+		return gavrylivka_school_document_tile( intval( $atts['id'] ), $atts['title'], false );
+	} elseif ( ! empty( $atts['url'] ) ) {
+		return gavrylivka_school_document_tile( $atts['url'], $atts['title'], false );
+	}
+	
+	return '';
+}
+add_shortcode( 'document', 'gavrylivka_school_document_shortcode' );
+
+/**
+ * Automatically convert document links to tiles in content
+ */
+function gavrylivka_school_auto_document_tiles( $content ) {
+	// Check if we're in a post/page content
+	if ( ! is_singular() && ! is_page() ) {
+		return $content;
+	}
+	
+	// Pattern to match links to document files
+	$pattern = '/<a\s+(?:[^>]*?\s+)?href="([^"]*\.(?:doc|docx|ppt|pptx|xls|xlsx|pdf))"(?:[^>]*?)>([^<]*)<\/a>/i';
+	
+	// Replace with document tiles
+	$content = preg_replace_callback( $pattern, function( $matches ) {
+		$url = $matches[1];
+		$title = $matches[2];
+		
+		// Get attachment ID from URL
+		$attachment_id = attachment_url_to_postid( $url );
+		
+		if ( $attachment_id ) {
+			return gavrylivka_school_document_tile( $attachment_id, $title, false );
+		} else {
+			return gavrylivka_school_document_tile( $url, $title, false );
+		}
+	}, $content );
+	
+	return $content;
+}
+add_filter( 'the_content', 'gavrylivka_school_auto_document_tiles', 20 );
