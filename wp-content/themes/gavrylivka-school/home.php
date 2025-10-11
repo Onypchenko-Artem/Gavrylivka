@@ -18,6 +18,7 @@ get_header();
 	get_template_part('template-parts/home/hero-section');
 	get_template_part('template-parts/home/about-section');
 	get_template_part('template-parts/home/news-section');
+	get_template_part('template-parts/home/gallery-section');
 	?>
 
 </main>
