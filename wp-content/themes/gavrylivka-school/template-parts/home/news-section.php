@@ -37,9 +37,17 @@
 							<h3 class="post-title">
 								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 							</h3>
-							<div class="post-excerpt">
-								<?php the_excerpt(); ?>
-							</div>
+						<div class="post-excerpt">
+							<?php
+							$excerpt = has_excerpt() ? get_the_excerpt() : get_the_content();
+							$excerpt = wp_strip_all_tags($excerpt);
+							if (strlen($excerpt) > 150) {
+								$excerpt = substr($excerpt, 0, 150);
+								$excerpt = substr($excerpt, 0, strrpos($excerpt, ' ')) . '...';
+							}
+							echo '<p>' . esc_html($excerpt) . '</p>';
+							?>
+						</div>
 							<a href="<?php the_permalink(); ?>" class="read-more">Читати далі →</a>
 						</div>
 					</article>

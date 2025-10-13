@@ -1,113 +1,30 @@
-/* Hero Section Styles
+/* Hero Section Styles - Background Slider Version
 --------------------------------------------- */
 
 .hero-section {
-    background: linear-gradient(135deg, #3b82f6 0%, #4f46e5 20%, #7c3aed 50%, #7c3aed 100%);
-    color: white;
-    min-height: 90vh;
+    position: relative;
+    min-height: 100vh;
     display: flex;
     align-items: center;
-}
-
-.hero-container {
-    max-width: 1440px;
-    margin: 0 auto;
-    /*padding: 40px 20px;*/
-    display: grid;
-    grid-template-columns: 40% 60%;
-    gap: 60px;
-    align-items: stretch;
-    width: 100%;
-    min-height: 90vh;
-    padding: 0 20px; /* Базовые отступы внутри контейнера */
-    box-sizing: border-box; /* Чтобы padding не ломал ширину */
-}
-
-.hero-content {
-    max-width: 500px;
-    justify-self: start; /* Прибиваем к левой границе */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Центрируем контент по вертикали */
-}
-
-.hero-image {
-    justify-self: stretch; /* Занимаем всю ширину grid-ячейки */
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center; /* Центрируем слайдер по горизонтали */
+    overflow: hidden;
+    background: #1f2937; /* Fallback color */
 }
 
-.hero-content,
-.hero-image {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    overflow: hidden; /* Защита от вылезающих картинок */
-}
-
-.hero-title {
-    font-size: 3rem;
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 24px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.hero-subtitle {
-    font-size: 1.25rem;
-    line-height: 1.6;
-    margin-bottom: 32px;
-    opacity: 0.9;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-/* Removed duplicate .hero-image declaration */
-
-.hero-image img {
-    max-width: 100%;
-    height: auto;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    object-fit: cover;
-    /*max-height: 500px;*/
-    transition: transform 0.3s ease;
-}
-
-.hero-image svg {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    /*box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);*/
-}
-
-.hero-illustration {
-    animation: float 6s ease-in-out infinite;
-}
-
-.hero-illustration svg {
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15));
-}
-
-/* Hero Slider */
+/* Background Slider */
 .hero-slider {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    box-shadow: -5px 10px 50px rgba(0, 0, 0, 0.25);
+    z-index: 1;
 }
 
 .slider-container {
     position: relative;
     width: 100%;
-    height: 100%; /* Занимаем всю высоту hero-slider */
-    min-height: 90vh; /* Минимальная высота для слишком маленьких экранов */
+    height: 100%;
 }
 
 .slide {
@@ -117,7 +34,7 @@
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.8s ease-in-out;
 }
 
 .slide.active {
@@ -128,53 +45,142 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 0;
-    box-shadow: none;
-    display: block; /* Убираем возможные отступы */
+    display: block;
 }
 
-/* Slider Navigation */
-.slider-nav {
+/* Dark Overlay for better text readability */
+.hero-overlay {
     position: absolute;
-    top: 50%;
+    top: 0;
     left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
-    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg, 
+        rgba(31, 41, 55, 0.85) 0%, 
+        rgba(17, 24, 39, 0.75) 50%, 
+        rgba(31, 41, 55, 0.85) 100%
+    );
+    z-index: 2;
 }
 
-.slider-btn {
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
+/* Content Container */
+.hero-container {
+    position: relative;
+    z-index: 3;
+    max-width: 1440px;
+    width: 100%;
+    padding: 60px 40px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.hero-content {
+    max-width: 1200px;
+    text-align: center;
+    color: white;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0.95;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Hero Section Buttons */
+.hero-section .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: none;
+    font-size: 1rem;
+    line-height: 1.5;
     cursor: pointer;
-    transition: all 0.3s ease;
-    pointer-events: auto;
-    color: #374151;
+    text-shadow: none;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+}
+
+.hero-section .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    transition: left 0.8s ease;
+}
+
+.hero-section .btn:hover::before {
+    left: 100%;
+}
+
+.hero-section .btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+}
+
+.hero-section .btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    /*box-shadow: 0 8px 8px rgba(37, 99, 235, 0.3);*/
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: #f0f9ff;
+}
+
+.hero-section .btn-primary:active {
+    transform: translateY(-1px) scale(1.01);
+}
+
+.hero-section .btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-.slider-btn:hover {
-    background: rgba(255, 255, 255, 1);
-    transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+.hero-section .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-3px) scale(1.02);
+    /*box-shadow: 0 12px 35px rgba(255, 255, 255, 0.3);*/
+    color: #ffffff;
 }
 
-.slider-btn:active {
-    transform: scale(0.95);
-}
-
-.slider-btn svg {
-    width: 24px;
-    height: 24px;
+.hero-section .btn-secondary:active {
+    transform: translateY(-1px) scale(1.01);
 }
 
 /* Segmented Progress Bar */
@@ -185,12 +191,13 @@
     right: 0;
     height: 4px;
     display: flex;
-    gap: 2px; /* Промежуток между сегментами */
-    padding: 0 4px; /* Небольшие отступы по краям */
+    gap: 2px;
+    padding: 0 4px;
+    z-index: 10;
 }
 
 .progress-segment {
-    flex: 1; /* Равномерно распределяем сегменты */
+    flex: 1;
     height: 100%;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 1px;
@@ -225,199 +232,147 @@
     bottom: 0;
     width: 2px;
     background: rgba(255, 255, 255, 1);
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
 }
 
-/* Floating animation */
+/* Fallback Illustration */
+.hero-illustration {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+}
+
+.hero-illustration svg {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @keyframes float {
     0%, 100% {
-        transform: translateY(0px);
+        transform: translate(-50%, -50%) translateY(0px);
     }
     50% {
-        transform: translateY(-10px);
+        transform: translate(-50%, -50%) translateY(-20px);
     }
-}
-
-/* Slider autoplay pause on hover */
-.hero-slider:hover .slide {
-    animation-play-state: paused;
-}
-
-/* Buttons */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 12px 24px;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    border: 2px solid transparent;
-    font-size: 1rem;
-    line-height: 1.5;
-}
-
-.btn-primary {
-    background: white;
-    color: #2563eb;
-}
-
-.btn-primary:hover {
-    background: #f8fafc;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.btn-secondary {
-    background: transparent;
-    color: white;
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: white;
-    color: white;
-}
-
-.btn-outline {
-    background: transparent;
-    color: #2563eb;
-    border-color: #2563eb;
-}
-
-.btn-outline:hover {
-    background: #2563eb;
-    color: white;
 }
 
 /* Responsive Design */
 @media screen and (max-width: 1024px) {
     .hero-container {
-        padding: 50px 30px;
-        gap: 40px;
-        grid-template-columns: 1fr 1fr; /* Равномерно делим */
+        padding: 40px 30px;
+    }
+
+    .hero-content {
+        max-width: 700px;
     }
 
     .hero-title {
-        font-size: 2.25rem;
+        font-size: 2.75rem;
     }
 
     .hero-subtitle {
-        font-size: 1.125rem;
+        font-size: 1.25rem;
     }
 
-    .slider-container {
-        min-height: 400px; /* Достаточно для планшетов */
-        aspect-ratio: 16/9;
+    .hero-section .btn {
+        padding: 12px 28px;
+        font-size: 0.95rem;
     }
 }
 
 @media screen and (max-width: 768px) {
     .hero-container {
-        grid-template-columns: 1fr;
-        gap: 0;
-        padding: 40px 0 0 0;
-        text-align: center;
+        padding: 30px 20px;
     }
 
     .hero-content {
-        padding: 0 20px 30px 20px;
-    }
-
-    .hero-image {
-        margin: 0;
-        padding: 0;
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        margin-top: auto;
-        align-self: flex-end;
+        max-width: 100%;
     }
 
     .hero-title {
-        font-size: 2rem;
+        font-size: 2.25rem;
+        margin-bottom: 20px;
     }
 
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 1.125rem;
+        margin-bottom: 32px;
     }
 
     .hero-buttons {
-        justify-content: center;
+        gap: 16px;
     }
 
-    .hero-image {
-        margin: 0;
-        padding: 0;
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-    }
-
-    .hero-slider {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    .slider-container {
-        width: 100%;
-        min-height: 260px;
-        aspect-ratio: 16/9;
-        position: relative;
-    }
-
-    .slider-btn {
-        width: 40px;
-        height: 40px;
-    }
-
-    .slider-btn svg {
-        width: 18px;
-        height: 18px;
+    .hero-section .btn {
+        padding: 12px 24px;
+        font-size: 0.95rem;
     }
 }
 
 @media screen and (max-width: 480px) {
+    .hero-section {
+        min-height: 100vh;
+    }
+
+    .hero-container {
+        padding: 20px 16px;
+    }
+
     .hero-title {
-        font-size: 1.75rem;
+        font-size: 1.875rem;
+        margin-bottom: 16px;
     }
 
     .hero-subtitle {
-        font-size: 0.95rem;
+        font-size: 1rem;
+        margin-bottom: 28px;
     }
 
-    .hero-image {
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        margin-top: auto;
-        align-self: flex-end;
-    }
-
-    .slider-container {
-        min-height: 200px;
-        aspect-ratio: 4/3;
+    .hero-buttons {
+        flex-direction: column;
+        gap: 14px;
         width: 100%;
     }
 
-    .slider-btn {
-        width: 34px;
-        height: 34px;
+    .hero-section .btn {
+        width: 100%;
+        padding: 12px 24px;
+        font-size: 0.95rem;
     }
 
-    .slider-btn svg {
-        width: 16px;
-        height: 16px;
+    .slider-progress {
+        height: 3px;
     }
 }
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .hero-content {
+        animation: none;
+    }
+    
+    .slide {
+        transition: none;
+    }
+    
+    .hero-section .btn {
+        transition: none;
+    }
+}
+

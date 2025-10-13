@@ -48,48 +48,33 @@ if ($hero_gallery && is_array($hero_gallery)) {
 
 <!-- Hero Section -->
 <section class="hero-section">
-	<div class="hero-container">
-		<div class="hero-content">
-			<h1 class="hero-title">
-				<?php echo esc_html($hero_title); ?>
-			</h1>
-			<p class="hero-subtitle">
-				<?php echo esc_html($hero_subtitle); ?>
-			</p>
-			<div class="hero-buttons">
-				<a href="<?php echo esc_url($hero_primary_button_link); ?>" class="btn btn-primary">
-					<?php echo esc_html($hero_primary_button_text); ?>
-				</a>
-				<a href="<?php echo esc_url($hero_secondary_button_link); ?>" class="btn btn-secondary">
-					<?php echo esc_html($hero_secondary_button_text); ?>
-				</a>
-			</div>
-		</div>
-		<div class="hero-image">
-			<?php if (!empty($banner_images)) : ?>
-				<div class="hero-slider">
-					<div class="slider-container">
-						<?php foreach ($banner_images as $index => $image) : ?>
-							<div class="slide <?php echo $index === 0 ? 'active' : ''; ?>" data-slide="<?php echo $index; ?>">
-								<img src="<?php echo esc_url($image['url']); ?>"
-									 alt="<?php echo esc_attr($image['alt'] ?: 'Фото школи ' . ($index + 1)); ?>"
-									 loading="<?php echo $index === 0 ? 'eager' : 'lazy'; ?>">
-							</div>
-						<?php endforeach; ?>
+	<!-- Background Slider -->
+	<?php if (!empty($banner_images)) : ?>
+		<div class="hero-slider">
+			<div class="slider-container">
+				<?php foreach ($banner_images as $index => $image) : ?>
+					<div class="slide <?php echo $index === 0 ? 'active' : ''; ?>" data-slide="<?php echo $index; ?>">
+						<img src="<?php echo esc_url($image['url']); ?>"
+							 alt="<?php echo esc_attr($image['alt'] ?: 'Фото школи ' . ($index + 1)); ?>"
+							 loading="<?php echo $index === 0 ? 'eager' : 'lazy'; ?>">
 					</div>
+				<?php endforeach; ?>
+			</div>
 
-                    <?php if (count($banner_images) > 1) : ?>
-                        <!-- Segmented Progress Bar -->
-						<div class="slider-progress">
-							<?php foreach ($banner_images as $index => $image) : ?>
-								<div class="progress-segment" data-slide="<?php echo $index; ?>">
-									<div class="segment-fill"></div>
-								</div>
-							<?php endforeach; ?>
+			<?php if (count($banner_images) > 1) : ?>
+				<!-- Segmented Progress Bar -->
+				<div class="slider-progress">
+					<?php foreach ($banner_images as $index => $image) : ?>
+						<div class="progress-segment" data-slide="<?php echo $index; ?>">
+							<div class="segment-fill"></div>
 						</div>
-					<?php endif; ?>
+					<?php endforeach; ?>
 				</div>
-			<?php else : ?>
+			<?php endif; ?>
+		</div>
+		<!-- Dark Overlay -->
+		<div class="hero-overlay"></div>
+	<?php else : ?>
 				<!-- Fallback: Beautiful School Illustration -->
 				<div class="hero-illustration">
 					<svg width="500" height="400" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -200,7 +185,25 @@ if ($hero_gallery && is_array($hero_gallery)) {
 						</defs>
 					</svg>
 				</div>
-			<?php endif; ?>
+	<?php endif; ?>
+
+	<!-- Content Overlay -->
+	<div class="hero-container">
+		<div class="hero-content">
+			<h1 class="hero-title">
+				<?php echo esc_html($hero_title); ?>
+			</h1>
+			<p class="hero-subtitle">
+				<?php echo esc_html($hero_subtitle); ?>
+			</p>
+			<div class="hero-buttons">
+				<a href="<?php echo esc_url($hero_primary_button_link); ?>" class="btn btn-primary">
+					<?php echo esc_html($hero_primary_button_text); ?>
+				</a>
+				<a href="<?php echo esc_url($hero_secondary_button_link); ?>" class="btn btn-secondary">
+					<?php echo esc_html($hero_secondary_button_text); ?>
+				</a>
+			</div>
 		</div>
 	</div>
 </section>

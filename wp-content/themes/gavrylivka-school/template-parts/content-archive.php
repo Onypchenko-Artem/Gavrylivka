@@ -31,11 +31,13 @@
 
 		<div class="news-card-excerpt">
 			<?php
-			if ( has_excerpt() ) {
-				the_excerpt();
-			} else {
-				echo '<p>' . wp_trim_words( get_the_content(), 20, '...' ) . '</p>';
+			$excerpt = has_excerpt() ? get_the_excerpt() : get_the_content();
+			$excerpt = wp_strip_all_tags($excerpt);
+			if (strlen($excerpt) > 150) {
+				$excerpt = substr($excerpt, 0, 150);
+				$excerpt = substr($excerpt, 0, strrpos($excerpt, ' ')) . '...';
 			}
+			echo '<p>' . esc_html($excerpt) . '</p>';
 			?>
 		</div><!-- .news-card-excerpt -->
 		
