@@ -75,13 +75,20 @@ get_header();
 						}
 					}
 					
-					// Fallback to attached media if no gallery found
-					if ( empty( $all_images ) ) {
-						$all_images = get_attached_media( 'image', get_the_ID() );
-					}
-					
-					
-					if ( ! empty( $all_images ) && count($all_images) > 20 ) {
+				// Fallback to attached media if no gallery found
+				if ( empty( $all_images ) ) {
+					$all_images = get_attached_media( 'image', get_the_ID() );
+				}
+				
+				// Sort images by date (newest first)
+				if ( ! empty( $all_images ) ) {
+					usort( $all_images, function( $a, $b ) {
+						return strtotime( $b->post_date ) - strtotime( $a->post_date );
+					});
+				}
+				
+				
+				if ( ! empty( $all_images ) && count($all_images) > 20 ) {
 						// Pagination setup for Gutenberg gallery
 						$images_per_page = 20;
 						$total_images = count( $all_images );
@@ -164,11 +171,18 @@ get_header();
 					}
 				}
 				
-				if ( ! $has_gallery ) {
-					// Get all attached images
-					$all_images = get_attached_media( 'image', get_the_ID() );
-					
-					if ( ! empty( $all_images ) ) :
+			if ( ! $has_gallery ) {
+				// Get all attached images
+				$all_images = get_attached_media( 'image', get_the_ID() );
+				
+				// Sort images by date (newest first)
+				if ( ! empty( $all_images ) ) {
+					usort( $all_images, function( $a, $b ) {
+						return strtotime( $b->post_date ) - strtotime( $a->post_date );
+					});
+				}
+				
+				if ( ! empty( $all_images ) ) :
 						// Pagination setup
 						$images_per_page = 20;
 						$total_images = count( $all_images );
